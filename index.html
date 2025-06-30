@@ -1,59 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Identity Information</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Identity & Age Verification</title>
+  <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <style>
-    .id-card {
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      background-color: #fff;
-    }
-    .id-photo {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-bottom: 15px;
-    }
+    body { font-family: Arial; background: #f4f4f4; padding: 2rem; }
+    .container { background: white; padding: 2rem; max-width: 500px; margin: auto; border-radius: 8px; }
+    input, button { width: 100%; padding: 0.75rem; margin-top: 1rem; }
+    button { background: #28a745; color: white; border: none; cursor: pointer; }
+    .error { color: red; margin-top: 1rem; }
+    .success { color: green; margin-top: 1rem; }
+
+
   </style>
 </head>
-<body class="bg-light">
-<form id="verifyForm">
-  <div class="container text-center">
-    <div class="id-card center">
-        <div class="panel-body"> <p><strong>Your Information</strong></div>
-            <div id="verifyIdentity" style="display: block;">
-                <div class="d-flex justify-content-center">
-                    <image src="./identity.png"  width="150" height="100" alt="ID Photo"></image>
-                    <p><strong>Identity Verification</strong></p>
-                </div>
-                <hr>
-                <p><strong>To checkout we requires you to verify your identity to ensure that it's really you.</strong></p>
-                <button type="submit" class="btn btn-primary">Verify Identity</button>
-            </div>
-            <div id="identityVerified" style="display: none;">
-                <div class="d-flex justify-content-center">
-                    <image src=""  width="80" height="80" id="portrait" alt="ID Photo"></image>
-                </div>
-                <hr>
-                <p><strong>First Name</strong><span id="given_name"> No name</span></p>
-                <p><strong>Family Name</strong><span id="family_name"> No name</span></p>
-                <p><strong>Age over 21</strong>
-                    <span> 
-                        <img id="id="age_over_21" src="" width="70" height="70" alt="Red dot" />
-                    </span>
-                </p>
-            </div>
-    </div>
+<body>
+  <div class="container">
+    <h2>Get Identity and Age</h2>
+    <form id="verifyForm">
+      <button type="submit">Get Person Identity</button>
+
+      <div id="identityInfo" style="display: none;">
+        <div colspan="2">
+        <label for="given_name">Full Name:</label>
+        <input type="text" id="given_name"/>
+        </div>
+
+      <label for="family_name">Family Name:</label>
+      <input type="text" id="family_name"/>
+
+      <label for="is_age_over_21">is age over 21:</label>
+        <image id="is_age_over_21" width="20" height="15"/>
+        
+    <label for="potrait">potrait</label>    
+        <img id="potrait" src="" width="70" height="70" alt="Red dot" />
+      </div>
+
+    </form>
+    <p id="result"></p>
   </div>
-  </form>
-</body>
+
   <script>
 
 
@@ -84,10 +73,9 @@
         console.log(response.data)
         let responseString = base64URLdecode(response.data.response)
         const jsonObject = JSON.parse(responseString);
-        document.getElementById("verifyIdentity").style.display="none";
-        document.getElementById("identityVerified").style.display="block";
-        document.getElementById("given_name").innerHTML = jsonObject["given_name"];
-        document.getElementById("family_name").innerHTML = jsonObject["family_name"];
+        document.getElementById("identityInfo").style.display="block";
+        document.getElementById("given_name").value = jsonObject["given_name"];
+        document.getElementById("family_name").value = jsonObject["family_name"];
         if(jsonObject["age_over_21"]) {
             document.getElementById("is_age_over_21").src="https://raw.githubusercontent.com/PKief/vscode-markdown-checkbox/main/logo.png" 
         }
@@ -110,4 +98,5 @@
         .join('');
     }
   </script>
+</body>
 </html>
