@@ -16,16 +16,19 @@
   <div class="container">
     <h2>Get Identity and Age</h2>
     <form id="verifyForm">
-      <label for="fullName">Full Name:</label>
-      <input type="text" id="fullName"/>
-
-      <label for="dob">Date of Birth:</label>
-      <input type="date" id="dob"/>
-
-      <label for="idNumber">Government ID Number:</label>
-      <input type="text" id="idNumber"/>
-
       <button type="submit">Get Person Identity</button>
+
+      <div id="identityInfo" style="display: none;">
+      <label for="given_name">Full Name:</label>
+      <input type="text" id="given_name"/>
+
+      <label for="family_name">Family Name:</label>
+      <input type="text" id="family_name"/>
+
+      <label for="is_age_over_21">is age over 21:</label>
+      <image id="is_age_over_21"/>
+      </div>
+
     </form>
     <p id="result"></p>
   </div>
@@ -57,15 +60,30 @@
         const response = await navigator.credentials.get(request);
         // Send the response to your server for handling.
         console.log(response)
+        console.log(response.data)
+        let responseString = base64URLdecode(response.data.response)
+        const jsonObject = JSON.parse(jsonString);
+        document.getElementById("identityInfo").style.display="block";
+        document.getElementById("given_name").value = jsonObject["given_name"];
+        document.getElementById("family_name").value = jsonObject["family_name"];
+        if(jsonObject["age_over_21"]) {
+            document.getElementById("is_age_over_21").src="https://raw.githubusercontent.com/PKief/vscode-markdown-checkbox/main/logo.png" 
+        }
 
     } catch (error) {
         // Use an alternative identity verification method.
         console.log(error)
     }
-
-     
-      // Simulated success
     });
+    function base64URLdecode(str) {
+    const base64Encoded = str.replace(/-/g, '+').replace(/_/g, '/');
+    const padding = str.length % 4 === 0 ? '' : '='.repeat(4 - (str.length % 4));
+    const base64WithPadding = base64Encoded + padding;
+    return atob(base64WithPadding)
+        .split('')
+        .map(char => String.fromCharCode(char.charCodeAt(0)))
+        .join('');
+    }
   </script>
 </body>
 </html>
