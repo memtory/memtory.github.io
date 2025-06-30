@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Identity Information</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style>
+    .id-card {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      background-color: #fff;
+    }
+    .id-photo {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body class="bg-light">
+<form id="verifyForm">
+  <div class="container text-center">
+    <div class="id-card center">
+        <div class="panel-body"> <p><strong>Your Information</strong></div>
+            <div id="verifyIdentity" style="display: block;">
+                <div class="d-flex justify-content-center">
+                    <image src="./identity.png"  width="150" height="100" alt="ID Photo"></image>
+                    <p><strong>Identity Verification</strong></p>
+                </div>
+                <hr>
+                <p><strong>To checkout we requires you to verify your identity to ensure that it's really you.</strong></p>
+                <button type="submit" class="btn btn-primary">Verify Identity</button>
+            </div>
+            <div id="identityVerified" style="display: none;">
+                <div class="d-flex justify-content-center">
+                    <image src=""  width="80" height="80" id="portrait" alt="ID Photo"></image>
+                </div>
+                <hr>
+                <p><strong>First Name</strong><span id="given_name"> No name</span></p>
+                <p><strong>Family Name</strong><span id="family_name"> No name</span></p>
+                <p><strong>Age over 21</strong>
+                    <span> 
+                        <img id="id="age_over_21" src="" width="70" height="70" alt="Red dot" />
+                    </span>
+                </p>
+            </div>
+    </div>
+  </div>
+  </form>
+</body>
+  <script>
+
+
+    document.getElementById("verifyForm").addEventListener("submit",async function(e) {
+      e.preventDefault();
+      try {
+    // A hardcoded sample request is provided below.
+    // This request would normally be built on your server.
+        const mdocRequest = {
+            "deviceRequest": "pGd2ZXJzaW9uYzEuMWtkb2NSZXF1ZXN0c4GhbGl0ZW1zUmVxdWVzdNgYWG6iZ2RvY1R5cGV1b3JnLmlzby4xODAxMy41LjEubURMam5hbWVTcGFjZXOhcW9yZy5pc28uMTgwMTMuNS4xpGhwb3J0cmFpdPVqZ2l2ZW5fbmFtZfVrYWdlX292ZXJfMjH0a2ZhbWlseV9uYW1l9W1yZWFkZXJBdXRoQWxsgYRDoQEmoRghWQF9MIIBeTCCASACCQCdvhptTdV7cDAKBggqhkjOPQQDAjBFMRowGAYDVQQKDBFUZXN0IE9yZ2FuaXphdGlvbjEnMCUGA1UEAwweVGVzdCBSZXF1ZXN0IEF1dGhlbnRpY2F0aW9uIENBMB4XDTI1MDUyNzIwNDgwMFoXDTM1MDUyNTIwNDgwMFowRTEaMBgGA1UECgwRVGVzdCBPcmdhbml6YXRpb24xJzAlBgNVBAMMHlRlc3QgUmVxdWVzdCBBdXRoZW50aWNhdGlvbiBDQTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABIt9TGoAW2u25Yi_Czptq21xNUqolJdfvpBDRVBYdMXSsdwxsbl2JH3gF3YiP6VldwYI0UxF0-CtkgUCoJ-LjaMwCgYIKoZIzj0EAwIDRwAwRAIgR8Pa4-6_xvHi5m7SLckA0QmdjVhUEzeam_SHkpmM4AECIH5H7lgKOw0C0mFIvgGG8cyS7IUuk6wGIsmc7JjtX9em9lhApChXUdkLtAgRXpmq_RGHLXpfazSUYQ3mi5nXDYw73R9yqw_gyOSDvxpjwEeSKkHEdYt777Wu8OskvwjqAiPahXFkZXZpY2VSZXF1ZXN0SW5mb9gYWCehaHVzZUNhc2VzgaJpbWFuZGF0b3J59Wxkb2N1bWVudFNldHOBgQA",
+            "encryptionInfo": "gmVkY2FwaaJlbm9uY2VYIPlv505ZK3Y93ZZhO-Wi4HqqHWHismrehHtGtNx3fxOxcnJlY2lwaWVudFB1YmxpY0tleaQBAiABIVggrlztqHsaR_OK3Npf8eTvG6AZWNxJsb69ZTFIPJcUR-0iWCCbWR3FyNPy2ysLKoiTysxI7LjxvcRnfNsB-JLDNmZdDw"
+        }
+        
+        const request = {
+            mediation: "required",
+            digital: {
+                requests: [{
+                    protocol: "org-iso-mdoc",
+                    data: mdocRequest
+                }]
+            }
+        };
+        console.log(request)
+        
+        const response = await navigator.credentials.get(request);
+        // Send the response to your server for handling.
+        console.log(response)
+        console.log(response.data)
+        let responseString = base64URLdecode(response.data.response)
+        const jsonObject = JSON.parse(responseString);
+        document.getElementById("verifyIdentity").style.display="none";
+        document.getElementById("identityVerified").style.display="block";
+        document.getElementById("given_name").innerHTML = jsonObject["given_name"];
+        document.getElementById("family_name").innerHTML = jsonObject["family_name"];
+        if(jsonObject["age_over_21"]) {
+            document.getElementById("is_age_over_21").src="https://raw.githubusercontent.com/PKief/vscode-markdown-checkbox/main/logo.png" 
+        }
+        if(jsonObject["portrait"]) {
+            document.getElementById("portrait").src=jsonObject["portrait"]
+        }
+
+    } catch (error) {
+        // Use an alternative identity verification method.
+        console.log(error)
+    }
+    });
+    function base64URLdecode(str) {
+    const base64Encoded = str.replace(/-/g, '+').replace(/_/g, '/');
+    const padding = str.length % 4 === 0 ? '' : '='.repeat(4 - (str.length % 4));
+    const base64WithPadding = base64Encoded + padding;
+    return atob(base64WithPadding)
+        .split('')
+        .map(char => String.fromCharCode(char.charCodeAt(0)))
+        .join('');
+    }
+  </script>
+</html>
