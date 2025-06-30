@@ -39,12 +39,12 @@
             </div>
             <div id="identityVerified" style="display: none;">
                 <div class="d-flex justify-content-center">
-                    <image src=""  width="80" height="80" id="portrait" alt="ID Photo"></image>
+                    <image src=""  width="80" height="80" id="potrait" alt="ID Photo"></image>
                 </div>
                 <hr>
-                <p><strong>First Name</strong><span id="given_name"> No name</span></p>
-                <p><strong>Family Name</strong><span id="family_name"> No name</span></p>
-                <p><strong>Age over 21</strong>
+                <p><strong>First Name :  </strong><span id="given_name"> No name</span></p>
+                <p><strong>Family Name :  </strong><span id="family_name"> No name</span></p>
+                <p><strong>Age over 21 :  </strong>
                     <span> 
                         <img id="id="age_over_21" src="" width="70" height="70" alt="Red dot" />
                     </span>
@@ -88,12 +88,13 @@
         document.getElementById("identityVerified").style.display="block";
         document.getElementById("given_name").innerHTML = jsonObject["given_name"];
         document.getElementById("family_name").innerHTML = jsonObject["family_name"];
+        document.getElementById("potrait").src=jsonObject["potrait"]
         if(jsonObject["age_over_21"]) {
             document.getElementById("is_age_over_21").src="https://raw.githubusercontent.com/PKief/vscode-markdown-checkbox/main/logo.png" 
         }
-        if(jsonObject["portrait"]) {
-            document.getElementById("portrait").src=jsonObject["portrait"]
-        }
+        
+            
+        
 
     } catch (error) {
         // Use an alternative identity verification method.
