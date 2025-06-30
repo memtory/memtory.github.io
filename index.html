@@ -62,7 +62,7 @@
         console.log(response)
         console.log(response.data)
         let responseString = base64URLdecode(response.data.response)
-        const jsonObject = JSON.parse(jsonString);
+        const jsonObject = JSON.parse(responseString);
         document.getElementById("identityInfo").style.display="block";
         document.getElementById("given_name").value = jsonObject["given_name"];
         document.getElementById("family_name").value = jsonObject["family_name"];
